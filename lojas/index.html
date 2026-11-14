@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#071a12">
+<title>A loja de cada um · Amigo Secreto</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='36' r='22' fill='%23c9a24a'/%3E%3Crect x='26' y='8' width='12' height='8' rx='2' fill='%23f3dfa2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#071a12;--bg2:#0c2a1f;--gold:#d6b25e;--gold-hi:#f5e2a8;--ivory:#f7efe0;--muted:#c9bfa8;--line:rgba(214,178,94,.35);
+  --foil:linear-gradient(135deg,#8d6a22 0%,#f5e2a8 28%,#c9a24a 52%,#fff1c4 70%,#9c7628 100%);
+  --serif:"Cormorant Garamond",Georgia,serif;--sans:"Jost",system-ui,sans-serif}
+*{box-sizing:border-box;min-width:0}
+html{background:var(--bg)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(1200px 700px at 50% -10%,#16422f 0%,var(--bg2) 40%,var(--bg) 100%)}
+body{margin:0;color:var(--ivory);font:300 17px/1.6 var(--sans);overflow-x:clip}
+main{max-width:860px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 34px) max(5vw,16px) 60px}
+.foil{background:var(--foil);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sobre{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--gold);text-align:center}
+h1{font-family:var(--serif);font-weight:500;font-style:italic;font-size:clamp(42px,9vw,72px);line-height:1.05;margin:2px 0 10px;text-align:center}
+.carregando{text-align:center;color:var(--muted);padding:30px;display:block!important}
+.av{border-radius:50%;padding:3px;background:var(--foil)}
+.av>div{width:100%;height:100%;border-radius:50%;background:#123a2a center/cover no-repeat;display:grid;place-items:center;
+  font-family:var(--serif);font-style:italic;color:var(--gold-hi);border:3px solid var(--bg)}
+.atualizado{text-align:center;color:var(--muted);font-size:14px;margin-top:16px}
+footer{margin-top:40px;text-align:center;color:var(--muted);font-size:14px}
+/* lista de lojas */
+.lojas-intro{margin:-8px 0 18px;color:var(--muted);font-size:16px}
+.lista-lojas{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:rgba(7,26,18,.55)}
+.lista-lojas li{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.3fr);gap:16px;align-items:center;padding:14px 20px;border-top:1px solid rgba(214,178,94,.18)}
+.lista-lojas li:first-child{border-top:0}
+.lista-lojas .av{width:52px;height:52px;margin:0}.lista-lojas .av>div{font-size:22px;border-width:2px}
+.lista-lojas .nm{font-family:var(--serif);font-size:26px;font-weight:600}
+.lista-lojas .lj{font-size:19px;color:var(--gold-hi);font-weight:400}
+.lista-lojas .lj small{display:block;font-size:14px;color:var(--muted)}
+.lista-lojas .lj.vazio{color:var(--muted);font-style:italic;font-size:17px}
+@media(max-width:600px){.lista-lojas li{grid-template-columns:auto minmax(0,1fr);gap:4px 14px;padding:14px 16px}.lista-lojas .av{grid-row:span 2}.lista-lojas .nm{font-size:23px}.lista-lojas .lj{font-size:17px}}
+
+
+</style>
+</head>
+<body>
+<main>
+  <div class="sobre">Amigo Secreto · Natal 2026</div>
+  <h1 class="foil">A loja de cada um</h1>
+  <p class="lojas-intro" style="text-align:center;margin:0 0 24px">Quem te tirou compra na sua loja. Se a pessoa que você tirou ainda não escolheu, volte aqui depois.</p>
+  <ol class="lista-lojas" id="listaLojas"><li class="carregando">Carregando…</li></ol>
+  <p class="atualizado" id="atualizado"></p>
+  <footer>Em torno de R$ 200 · sempre com troca · confira se o prazo de troca vai até depois do Natal</footer>
+</main>
+<script>
+{
+const URL_SB = "https://adamlaxpbvckihfscljf.supabase.co";
+const KEY = "sb_publishable_EiP8xyw4yO0I_c0-CVUupw_tNY9F3Fz";
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const avatar = p => `<div class="av"><div ${p.foto ? `style="background-image:url('${p.foto}')"` : ""}>${p.foto ? "" : esc(p.nome[0])}</div></div>`;
+const lista = document.getElementById("listaLojas");
+async function carregar() {
+  try {
+    const r = await fetch(`${URL_SB}/rest/v1/rpc/amigo_lista`, { method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" }, body: "{}" });
+    if (!r.ok) throw 0;
+    const pessoas = await r.json();
+    lista.innerHTML = pessoas.map(p => `
+      <li>${avatar(p)}<div class="nm">${esc(p.nome)}</div>${
+        p.loja_aberta ? `<div class="lj">Em aberto<small>Qualquer loja, desde que dê para trocar</small></div>`
+        : p.loja ? `<div class="lj">${esc(p.loja)}</div>`
+        : `<div class="lj vazio">Ainda não escolheu</div>`}</li>`).join("");
+    document.getElementById("atualizado").textContent = "Atualizado às " + new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  } catch (e) {
+    lista.innerHTML = `<li class="carregando">Não consegui carregar agora. Atualize a página em instantes.</li>`;
+  }
+}
+carregar();
+setInterval(carregar, 60000);
+}
+</script>
+</body>
+</html>

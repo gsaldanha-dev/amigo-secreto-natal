@@ -1,6 +1,6 @@
 # Amigo Secreto · Natal 2026
 
-Site estático (um `index.html`) + Supabase (projeto `spelling-bee`, tabelas `amigo_*`).
+Site estático (`index.html` = site completo, `lojas/` = só a lista de lojas) + Supabase (projeto `spelling-bee`, tabelas `amigo_*`).
 
 - Os pares são gerados uma vez no banco, como um ciclo único de 8: ninguém tira a si mesmo e ninguém fica "um tirou o outro".
 - Cada pessoa entra com um PIN de 4 dígitos. O navegador só fala com funções `amigo_*`; as tabelas ficam fechadas para visitantes.

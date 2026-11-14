@@ -77,24 +77,9 @@ h1{font-size:clamp(46px,10vw,92px);font-style:italic;font-weight:500;padding:4px
 .av>div{width:100%;height:100%;border-radius:50%;background:#123a2a center/cover no-repeat;display:grid;place-items:center;
   font-family:var(--serif);font-size:38px;font-style:italic;color:var(--gold-hi);border:3px solid var(--bg)}
 .card h3{font-size:26px}
-.card .loja{margin-top:6px;font-size:14px;color:var(--muted);min-height:22px}
-.card .loja em{font-style:normal;color:var(--gold-hi)}
 .selos{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px}
 .selo{font-size:12px;letter-spacing:.04em;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
 .selo.on{border-color:transparent;background:rgba(214,178,94,.18);color:var(--gold-hi)}
-
-/* lista de lojas */
-.ver-lojas{display:inline-flex;align-items:center;margin-top:16px;text-decoration:none;font-size:16px}
-.lojas-intro{margin:-8px 0 18px;color:var(--muted);font-size:16px}
-.lista-lojas{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:rgba(7,26,18,.55)}
-.lista-lojas li{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(0,1.3fr);gap:16px;align-items:center;padding:14px 20px;border-top:1px solid rgba(214,178,94,.18)}
-.lista-lojas li:first-child{border-top:0}
-.lista-lojas .av{width:52px;height:52px;margin:0}.lista-lojas .av>div{font-size:22px;border-width:2px}
-.lista-lojas .nm{font-family:var(--serif);font-size:26px;font-weight:600}
-.lista-lojas .lj{font-size:19px;color:var(--gold-hi);font-weight:400}
-.lista-lojas .lj small{display:block;font-size:14px;color:var(--muted)}
-.lista-lojas .lj.vazio{color:var(--muted);font-style:italic;font-size:17px}
-@media(max-width:600px){.lista-lojas li{grid-template-columns:auto minmax(0,1fr);gap:4px 14px;padding:14px 16px}.lista-lojas .av{grid-row:span 2}.lista-lojas .nm{font-size:23px}.lista-lojas .lj{font-size:17px}}
 
 /* regras */
 .regras{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
@@ -182,16 +167,9 @@ textarea{resize:vertical;min-height:80px}
     <h1 class="foil">Amigo Secreto</h1>
     <div class="contagem" id="contagem"><b class="foil">–</b><span>dias até 24 de dezembro</span></div>
     <div class="progresso" id="progresso">&nbsp;</div>
-    <a class="ghost ver-lojas" href="#lojas">Ver a loja de cada um</a>
   </header>
 
   <section id="minha"></section>
-
-  <section class="secao" id="lojas">
-    <div class="secao-tit"><h2 class="foil">A loja de cada um</h2></div>
-    <p class="lojas-intro">Para consultar sem precisar entrar. Se a pessoa que você tirou ainda não escolheu, volte aqui depois.</p>
-    <ol class="lista-lojas" id="listaLojas"><li class="carregando">Carregando…</li></ol>
-  </section>
 
   <section class="secao">
     <div class="secao-tit"><h2 class="foil">Participantes</h2></div>
@@ -217,6 +195,7 @@ textarea{resize:vertical;min-height:80px}
 <div class="toast" id="toast"></div>
 
 <script>
+if (location.hash === "#lojas") location.replace("lojas/");
 {
 const URL_SB = "https://adamlaxpbvckihfscljf.supabase.co";
 const KEY = "sb_publishable_EiP8xyw4yO0I_c0-CVUupw_tNY9F3Fz";
@@ -244,11 +223,6 @@ function avatar(p, cls = "") {
   const bg = p && p.foto ? `style="background-image:url('${p.foto}')"` : "";
   const ini = p && !p.foto ? esc(p.nome[0]) : "";
   return `<div class="av ${cls}"><div ${bg}>${ini}</div></div>`;
-}
-function textoLoja(p) {
-  if (p.loja_aberta) return `<em>Loja em aberto</em>`;
-  if (p.loja) return `<em>${esc(p.loja)}</em>`;
-  return "Ainda escolhendo a loja";
 }
 
 function contagem() {
@@ -278,19 +252,12 @@ function render() {
     <button class="card ${eu && eu.id === p.id ? "eu" : ""}" data-id="${p.id}" aria-label="${esc(p.nome)}">
       ${avatar(p)}
       <h3>${esc(p.nome)}</h3>
-      <div class="loja">${textoLoja(p)}</div>
       <div class="selos">
         <span class="selo ${p.perfil_pronto ? "on" : ""}">${p.perfil_pronto ? "Perfil pronto" : p.reivindicado ? "Montando perfil" : "Ainda não entrou"}</span>
         ${p.sorteou ? `<span class="selo on">Já sorteou</span>` : ""}
       </div>
     </button>`).join("");
-  $("#listaLojas").innerHTML = pessoas.map(p => `
-    <li>${avatar(p)}<div class="nm">${esc(p.nome)}</div>${
-      p.loja_aberta ? `<div class="lj">Em aberto<small>Qualquer loja, desde que dê para trocar</small></div>`
-      : p.loja ? `<div class="lj">${esc(p.loja)}</div>`
-      : `<div class="lj vazio">Ainda não escolheu</div>`}</li>`).join("");
   renderMinha();
-  if (location.hash === "#lojas" && !render.rolou) { render.rolou = true; $("#lojas").scrollIntoView(); }
 }
 
 function renderMinha() {
@@ -378,8 +345,8 @@ function abrirPerfil() {
         <input type="file" id="arq" accept="image/*" hidden></div>
       </div>
       <label for="loja">Sua loja</label>
-      <input type="text" id="loja" list="lojas" maxlength="80" placeholder="Ex.: Granado" value="${esc(p.loja || "")}" ${p.loja_aberta ? "disabled" : ""}>
-      <datalist id="lojas">${LOJAS.map(l => `<option value="${esc(l)}">`).join("")}</datalist>
+      <input type="text" id="loja" list="sugestoes" maxlength="80" placeholder="Ex.: Granado" value="${esc(p.loja || "")}" ${p.loja_aberta ? "disabled" : ""}>
+      <datalist id="sugestoes">${LOJAS.map(l => `<option value="${esc(l)}">`).join("")}</datalist>
       <label class="troca"><input type="checkbox" id="aberta" ${p.loja_aberta ? "checked" : ""}>
         <span>Deixar em aberto: quem me tirar pode comprar em qualquer loja, desde que dê para trocar.</span></label>
       <p class="erro" id="erro"></p>
