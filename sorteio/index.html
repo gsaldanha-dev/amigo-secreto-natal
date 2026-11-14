@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#071a12">
+<title>Sorteio · Amigo Secreto</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='36' r='22' fill='%23c9a24a'/%3E%3Crect x='26' y='8' width='12' height='8' rx='2' fill='%23f3dfa2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../comum.css?v=3">
+</head>
+<body>
+<main>
+  <header>
+    <svg class="enfeites" viewBox="0 0 520 150" aria-hidden="true">
+      <defs>
+        <linearGradient id="ou" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8d6a22"/><stop offset=".35" stop-color="#f5e2a8"/><stop offset=".6" stop-color="#c9a24a"/><stop offset="1" stop-color="#7a5a1c"/></linearGradient>
+        <radialGradient id="vi" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#d23a52"/><stop offset=".5" stop-color="#8f1d30"/><stop offset="1" stop-color="#3a0913"/></radialGradient>
+        <radialGradient id="ve" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#2f8a63"/><stop offset=".5" stop-color="#145a3e"/><stop offset="1" stop-color="#062418"/></radialGradient>
+        <radialGradient id="ov" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff3c8"/><stop offset=".45" stop-color="#d6b25e"/><stop offset="1" stop-color="#6b4f17"/></radialGradient>
+        <g id="b"><rect x="-6" y="-6" width="12" height="9" rx="2" fill="url(#ou)"/><circle r="22" cy="22"/><ellipse cx="-7" cy="12" rx="6" ry="3.5" fill="#fff" opacity=".35" transform="rotate(-30 -7 12)"/></g>
+      </defs>
+      <path d="M0 6 Q130 34 260 10 T520 6" fill="none" stroke="url(#ou)" stroke-width="1.5"/>
+      <g class="bola" style="transform-box:fill-box"><line x1="70" y1="20" x2="70" y2="62" stroke="url(#ou)"/><use href="#b" x="70" y="68" fill="url(#vi)"/></g>
+      <g class="bola" style="transform-box:fill-box"><line x1="160" y1="26" x2="160" y2="40" stroke="url(#ou)"/><use href="#b" x="160" y="46" fill="url(#ov)"/></g>
+      <g class="bola" style="transform-box:fill-box"><line x1="260" y1="10" x2="260" y2="80" stroke="url(#ou)"/><use href="#b" x="260" y="86" fill="url(#ve)"/></g>
+      <g class="bola" style="transform-box:fill-box"><line x1="360" y1="22" x2="360" y2="44" stroke="url(#ou)"/><use href="#b" x="360" y="50" fill="url(#vi)"/></g>
+      <g class="bola" style="transform-box:fill-box"><line x1="450" y1="12" x2="450" y2="60" stroke="url(#ou)"/><use href="#b" x="450" y="66" fill="url(#ov)"/></g>
+    </svg>
+    <div class="sobre">Família · Natal 2026</div>
+    <h1 class="foil">Amigo Secreto</h1>
+    <div class="pagina">Sorteio</div>
+    <div class="progresso" id="progresso">&nbsp;</div>
+  </header>
+
+  <section id="topo"><div class="carregando">Carregando…</div></section>
+
+  <section class="secao" id="nomes" hidden>
+    <div class="secao-tit"><h2 class="foil">Toque no seu nome</h2></div>
+    <div class="grade" id="grade"></div>
+  </section>
+
+  <section class="secao">
+    <div class="secao-tit"><h2 class="foil">Lembretes</h2></div>
+    <div class="regras">
+      <div class="regra"><h3>Em torno de R$ 200</h3><p>Compre numa das lojas que a pessoa escolheu. Se estiver em aberto, vale qualquer loja com troca.</p></div>
+      <div class="regra destaque"><h3>Sempre com troca</h3><p>Peça a etiqueta ou o cupom de troca, e confira se a troca vale depois de 25/12. Evite liquidação e promoção sem troca.</p></div>
+      <div class="regra destaque"><h3>Entrega: 25/12 à tarde</h3><p>O sorteio fica aberto até 24/12. Os presentes são entregues no dia de Natal, à tarde.</p></div>
+    </div>
+  </section>
+
+  <footer>Esqueceu o PIN? Fale com o Gustavo.</footer>
+</main>
+
+<script src="../comum.js?v=3"></script>
+<script>
+{
+const { $, esc, avatar, abrir, fechar, toast, rpc } = AS;
+let pessoas = [];
+const aberto = () => Date.now() >= AS.ABERTURA.getTime();
+const encerrado = () => Date.now() > AS.PRAZO.getTime();
+
+async function carregar() {
+  try { pessoas = await AS.lista(); }
+  catch (e) { $("#topo").innerHTML = `<div class="carregando">Não consegui carregar agora. Atualize a página.</div>`; return; }
+  render();
+}
+
+/* antes de terça 8h: só o relógio */
+function relogio() {
+  const tm = Math.ceil(Math.max(0, AS.ABERTURA - Date.now()) / 6e4); // minutos que faltam
+  const d = Math.floor(tm / 1440), h = Math.floor(tm / 60) % 24, m = tm % 60;
+  const caixa = (n, um, varios) => `<div><b class="foil">${n}</b><span>${n === 1 ? um : varios}</span></div>`;
+  return `<div class="relogio">${caixa(d, "dia", "dias")}${caixa(h, "hora", "horas")}${caixa(m, "minuto", "minutos")}</div>`;
+}
+
+function render() {
+  const eu = AS.eu();
+  const top = $("#topo"), nomes = $("#nomes");
+  if (!aberto()) {
+    $("#progresso").textContent = `${pessoas.filter(p => p.perfil_pronto).length} de ${pessoas.length} já se cadastraram`;
+    top.innerHTML = `
+      <p class="aviso">O sorteio abre na <b>terça-feira, 17 de novembro, às 8h da manhã</b>.</p>
+      ${relogio()}
+      <p class="convite">Ainda não fez o cadastro? Faça pelo link de cadastro.</p>`;
+    nomes.hidden = true;
+    return;
+  }
+  $("#progresso").textContent = `${pessoas.filter(p => p.sorteou).length} de ${pessoas.length} já sortearam`;
+  if (encerrado() && !eu) {
+    top.innerHTML = `<p class="aviso">O sorteio fechou em 24 de dezembro.</p>`;
+  }
+  if (eu) {
+    const p = pessoas.find(x => x.id === eu.id);
+    top.innerHTML = `
+      <div class="minha"><div class="minha-in">
+        ${avatar(p)}
+        <div><h2>Olá, ${esc(p.nome)}</h2>
+          <p>${p.sorteou ? "Você já sorteou. Toque para ver de novo." : "Confira se ninguém está olhando a sua tela."}</p></div>
+        <div class="acoes"><button class="btn botao-grande" id="bSorteio">${p.sorteou ? "Ver quem eu tirei" : "Sortear"}</button></div>
+      </div></div>
+      <div style="text-align:center"><button class="link" id="bSair">Não é você? Trocar de pessoa</button></div>`;
+    $("#bSorteio").onclick = () => p.sorteou ? verAmigo() : abrirSorteio();
+    $("#bSair").onclick = () => { AS.guardarEu(null); render(); };
+    nomes.hidden = true;
+    return;
+  }
+  if (!encerrado()) top.innerHTML = `<p class="aviso">Toque no seu nome e digite o seu PIN para sortear.</p>`;
+  nomes.hidden = false;
+  $("#grade").innerHTML = pessoas.map(p => `
+    <button class="card ${p.reivindicado ? "" : "falta"}" data-id="${p.id}" aria-label="${esc(p.nome)}">
+      ${avatar(p)}
+      <h3>${esc(p.nome)}</h3>
+      <div class="selos"><span class="selo ${p.sorteou ? "on" : ""}">${!p.reivindicado ? "Falta cadastrar" : p.sorteou ? "Já sorteou" : "Pode sortear"}</span></div>
+    </button>`).join("");
+}
+
+$("#grade").addEventListener("click", e => {
+  const c = e.target.closest(".card"); if (!c) return;
+  const p = pessoas.find(x => x.id === +c.dataset.id);
+  if (!p.reivindicado) {
+    abrir(`${avatar(p)}<h2 class="foil">${esc(p.nome)}</h2>
+      <p class="sub">Ainda não fez o cadastro. Faça primeiro pelo link de cadastro e depois volte aqui.</p>
+      <div class="rodape"><a class="btn botao-grande" href="../">Ir para o cadastro</a></div>`);
+    return;
+  }
+  AS.pedirPin(p, { criar: false, aoEntrar: async () => { await carregar(); scrollTo({ top: 0, behavior: "smooth" }); } });
+});
+
+function abrirSorteio() {
+  if (encerrado()) { abrir(`<h2 class="foil">Sorteio fechado</h2><p class="sub">O prazo era 24 de dezembro.</p>`); return; }
+  abrir(`
+    <h2 class="foil">Hora do sorteio</h2>
+    <p class="sub">Confira se ninguém está olhando a sua tela.</p>
+    <div class="roleta"><b class="foil" id="nomeRoda">?</b></div>
+    <p class="erro" id="erro"></p>
+    <div class="rodape"><button class="btn botao-grande" id="bGirar">Sortear agora</button></div>`);
+  $("#bGirar").onclick = async () => {
+    const b = $("#bGirar"), eu = AS.eu(); b.disabled = true;
+    const outros = pessoas.filter(x => x.id !== eu.id).map(x => x.nome);
+    let i = 0, atraso = 55, parar = false, res = null;
+    const roda = $("#nomeRoda");
+    const passo = () => {
+      if (!roda.isConnected) return;
+      roda.textContent = outros[i++ % outros.length];
+      if (parar && atraso > 260) { if (res) { etiqueta(res, true); carregar(); } return; }
+      if (parar) atraso *= 1.18;
+      setTimeout(passo, atraso);
+    };
+    passo();
+    try {
+      const [r] = await rpc("amigo_meu_amigo", { p_id: eu.id, p_pin: eu.pin, p_sortear: true });
+      if (r.status === "fechado") { abrir(`<h2 class="foil">Ainda não abriu</h2><p class="sub">O sorteio abre na terça-feira, 17 de novembro, às 8h.</p>`); return; }
+      if (r.status === "encerrado") { abrir(`<h2 class="foil">Sorteio fechado</h2><p class="sub">O prazo era 24 de dezembro.</p>`); return; }
+      if (r.status === "pin") { AS.guardarEu(null); fechar(); await carregar(); toast("Entre de novo com seu PIN."); return; }
+      res = r; setTimeout(() => parar = true, 1400);
+    } catch (e) { parar = true; $("#erro").textContent = "A internet falhou. Tente de novo."; b.disabled = false; }
+  };
+}
+
+async function verAmigo() {
+  abrir(`<div class="carregando">Abrindo o envelope…</div>`);
+  const eu = AS.eu();
+  try {
+    const [r] = await rpc("amigo_meu_amigo", { p_id: eu.id, p_pin: eu.pin, p_sortear: false });
+    if (r.status === "ok") etiqueta(r, false);
+    else if (r.status === "pin") { AS.guardarEu(null); fechar(); carregar(); toast("Entre de novo com seu PIN."); }
+    else abrirSorteio();
+  } catch (e) { const el = document.querySelector("#modal .carregando"); if (el) el.textContent = "A internet falhou. Tente de novo."; }
+}
+
+function etiqueta(r, festa) {
+  const loja = r.loja_aberta
+    ? `<div class="lj">Qualquer loja</div><div class="lj-sub">Desde que dê para trocar</div>`
+    : r.loja && r.loja2 ? `<div class="lj">${esc(r.loja)}</div><div class="lj-ou">ou</div><div class="lj">${esc(r.loja2)}</div><div class="lj-sub">Compre em uma das duas</div>`
+    : r.loja ? `<div class="lj">${esc(r.loja)}</div><div class="lj-sub">Compre nesta loja</div>`
+    : `<div class="lj">Loja ainda não escolhida</div><div class="lj-sub">Veja de novo daqui a alguns dias</div>`;
+  abrir(`
+    <div class="etiqueta">
+      <small>Você tirou</small>
+      <h3>${esc(r.nome)}</h3>
+      ${avatar(r)}
+      ${loja}
+      <p class="lembra">Em torno de R$ 200 · peça troca · a troca precisa valer depois de 25/12<br>Entrega: 25 de dezembro, à tarde</p>
+    </div>
+    <div class="rodape"><button class="btn botao-grande" id="bFim">Guardar segredo</button></div>`);
+  $("#bFim").onclick = fechar;
+  if (festa) AS.confete();
+}
+
+carregar();
+/* atualiza o relógio e abre sozinho na hora */
+setInterval(() => { if (!aberto() || !render.abriu) { if (aberto()) { render.abriu = true; carregar(); } else render(); } }, 20000);
+}
+</script>
+</body>
+</html>
