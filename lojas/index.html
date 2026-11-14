@@ -36,6 +36,7 @@ footer{margin-top:40px;text-align:center;color:var(--muted);font-size:14px}
 .lista-lojas .nm{font-family:var(--serif);font-size:26px;font-weight:600}
 .lista-lojas .lj{font-size:19px;color:var(--gold-hi);font-weight:400}
 .lista-lojas .lj small{display:block;font-size:14px;color:var(--muted)}
+.lista-lojas .l2{display:block}.lista-lojas .l2 i{color:var(--muted);font-family:var(--serif);font-size:.95em}
 .lista-lojas .lj.vazio{color:var(--muted);font-style:italic;font-size:17px}
 @media(max-width:600px){.lista-lojas li{grid-template-columns:auto minmax(0,1fr);gap:4px 14px;padding:14px 16px}.lista-lojas .av{grid-row:span 2}.lista-lojas .nm{font-size:23px}.lista-lojas .lj{font-size:17px}}
 
@@ -46,7 +47,7 @@ footer{margin-top:40px;text-align:center;color:var(--muted);font-size:14px}
 <main>
   <div class="sobre">Amigo Secreto · Natal 2026</div>
   <h1 class="foil">A loja de cada um</h1>
-  <p class="lojas-intro" style="text-align:center;margin:0 0 24px">Quem te tirou compra na sua loja. Se a pessoa que você tirou ainda não escolheu, volte aqui depois.</p>
+  <p class="lojas-intro" style="text-align:center;margin:0 0 24px">Quem te tirou compra em uma das suas lojas. Se a pessoa que você tirou ainda não escolheu, volte aqui depois.</p>
   <ol class="lista-lojas" id="listaLojas"><li class="carregando">Carregando…</li></ol>
   <p class="atualizado" id="atualizado"></p>
   <footer>Entrega: 25 de dezembro, à tarde<br>Em torno de R$ 200 · sempre com troca · a troca precisa valer depois de 25/12</footer>
@@ -66,6 +67,7 @@ async function carregar() {
     lista.innerHTML = pessoas.map(p => `
       <li>${avatar(p)}<div class="nm">${esc(p.nome)}</div>${
         p.loja_aberta ? `<div class="lj">Em aberto<small>Qualquer loja, desde que dê para trocar</small></div>`
+        : p.loja && p.loja2 ? `<div class="lj">${esc(p.loja)}<span class="l2"><i>ou</i> ${esc(p.loja2)}</span></div>`
         : p.loja ? `<div class="lj">${esc(p.loja)}</div>`
         : `<div class="lj vazio">Ainda não escolheu</div>`}</li>`).join("");
     document.getElementById("atualizado").textContent = "Atualizado às " + new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });

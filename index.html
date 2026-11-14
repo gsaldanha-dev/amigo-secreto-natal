@@ -124,6 +124,7 @@ textarea{resize:vertical;min-height:80px}
 .etiqueta .av{width:110px;height:110px}
 .etiqueta .av>div{border-color:#f5ecd9}
 .etiqueta .lj{font-family:var(--serif);font-size:26px;font-weight:600;color:#123a2a}
+.etiqueta .lj-ou{font-family:var(--serif);font-style:italic;font-size:18px;color:#8a6a2a;line-height:1.2}
 .etiqueta .lj-sub{font-size:14px;color:#5a4a33;margin-top:2px}
 .etiqueta .dica{margin:14px 0 0;padding-top:12px;border-top:1px dashed #c8b48a;font-size:14.5px;color:#4a3b25}
 .etiqueta .lembra{margin-top:14px;font-size:13px;color:#6b5636}
@@ -180,7 +181,7 @@ textarea{resize:vertical;min-height:80px}
     <div class="secao-tit"><h2 class="foil">As regras</h2></div>
     <div class="regras">
       <div class="regra"><h3>Em torno de R$ 200</h3><p>Esse é o valor de referência do presente. Nem muito abaixo, nem muito acima.</p></div>
-      <div class="regra"><h3>A loja é de quem recebe</h3><p>Cada um escolhe uma loja no seu perfil, e quem te tirar compra o presente lá. Quem preferir deixa <em>em aberto</em>: aí vale qualquer loja, desde que dê para trocar.</p></div>
+      <div class="regra"><h3>A loja é de quem recebe</h3><p>Cada um escolhe até duas opções de loja no seu perfil, e quem te tirar compra o presente em uma delas. Quem preferir deixa <em>em aberto</em>: aí vale qualquer loja, desde que dê para trocar.</p></div>
       <div class="regra"><h3>Sempre com troca</h3><p>Peça a etiqueta ou o cupom de troca. Evite liquidação, outlet, “promoção sem troca” e itens personalizados, que normalmente não trocam.</p></div>
       <div class="regra destaque"><h3>Atenção ao prazo de troca</h3><p>Confira na hora da compra até quando a troca vale. Ela precisa valer depois da entrega, no dia 25/12, de preferência até o meio de janeiro. Exemplo: comprar em 20/11 com 30 dias de troca acaba em 20/12, antes da entrega. Pergunte pela “troca de Natal” estendida, ou deixe para comprar mais perto da data.</p></div>
       <div class="regra destaque"><h3>Sortear e comprar até 24/12</h3><p>O sorteio fecha no fim do dia 24 de dezembro. Não deixe para a última hora: quem sortear tarde precisa de um tempo para comprar.</p></div>
@@ -271,7 +272,7 @@ function renderMinha() {
       ${avatar(p)}
       <div>
         <h2>Olá, ${esc(p.nome)}</h2>
-        <p>${precisaLoja ? "Escolha sua loja (ou deixe em aberto) para quem te tirar saber onde comprar." : p.loja_aberta ? "Sua loja está em aberto: vale qualquer loja com troca." : "Sua loja: " + esc(p.loja)}</p>
+        <p>${precisaLoja ? "Escolha sua loja (ou deixe em aberto) para quem te tirar saber onde comprar." : p.loja_aberta ? "Sua loja está em aberto: vale qualquer loja com troca." : (p.loja2 ? "Suas lojas: " + esc(p.loja) + " ou " + esc(p.loja2) : "Sua loja: " + esc(p.loja))}</p>
       </div>
       <div class="acoes">
         <button class="ghost" id="bPerfil">${precisaLoja ? "Montar perfil" : "Editar perfil"}</button>
@@ -345,16 +346,18 @@ function abrirPerfil() {
         <div><label class="ghost" style="display:inline-flex;align-items:center;margin:0;color:var(--ivory)" for="arq">Escolher foto</label>
         <input type="file" id="arq" accept="image/*" hidden></div>
       </div>
-      <label for="loja">Sua loja</label>
+      <label for="loja">Loja · 1ª opção</label>
       <input type="text" id="loja" list="sugestoes" maxlength="80" placeholder="Ex.: Granado" value="${esc(p.loja || "")}" ${p.loja_aberta ? "disabled" : ""}>
+      <label for="loja2">Loja · 2ª opção (opcional)</label>
+      <input type="text" id="loja2" list="sugestoes" maxlength="80" placeholder="Ex.: Natura" value="${esc(p.loja2 || "")}" ${p.loja_aberta ? "disabled" : ""}>
       <datalist id="sugestoes">${LOJAS.map(l => `<option value="${esc(l)}">`).join("")}</datalist>
       <label class="troca"><input type="checkbox" id="aberta" ${p.loja_aberta ? "checked" : ""}>
         <span>Deixar em aberto: quem me tirar pode comprar em qualquer loja, desde que dê para trocar.</span></label>
       <p class="erro" id="erro"></p>
       <div class="rodape"><button class="btn" id="bSalvar">Salvar perfil</button></div>
     </form>`);
-  const loja = $("#loja"), aberta = $("#aberta");
-  aberta.onchange = () => { loja.disabled = aberta.checked; if (!aberta.checked) loja.focus(); };
+  const loja = $("#loja"), loja2 = $("#loja2"), aberta = $("#aberta");
+  aberta.onchange = () => { loja.disabled = loja2.disabled = aberta.checked; if (!aberta.checked) loja.focus(); };
   $("#arq").onchange = async e => {
     const f = e.target.files[0]; if (!f) return;
     try { novaFoto = await reduzir(f); $("#prev").innerHTML = avatar({ ...p, foto: novaFoto }); }
@@ -363,10 +366,10 @@ function abrirPerfil() {
   $("#fPerfil").onsubmit = async ev => {
     ev.preventDefault();
     const err = $("#erro"), b = $("#bSalvar");
-    if (!aberta.checked && !loja.value.trim()) { err.textContent = "Escreva uma loja ou marque “deixar em aberto”."; return; }
+    if (!aberta.checked && !loja.value.trim() && !loja2.value.trim()) { err.textContent = "Escreva uma loja ou marque “deixar em aberto”."; return; }
     b.disabled = true; err.textContent = "";
     try {
-      const ok = await rpc("amigo_salvar_perfil", { p_id: eu.id, p_pin: eu.pin, p_foto: novaFoto, p_loja: loja.value, p_loja_aberta: aberta.checked });
+      const ok = await rpc("amigo_salvar_perfil", { p_id: eu.id, p_pin: eu.pin, p_foto: novaFoto, p_loja: loja.value, p_loja2: loja2.value, p_loja_aberta: aberta.checked });
       if (!ok) { guardarEu(null); fechar(); await carregar(); toast("Sessão expirada. Entre de novo."); return; }
       fechar(); await carregar(); toast("Perfil salvo");
     } catch (e2) { err.textContent = "Falhou ao salvar. Tente de novo."; b.disabled = false; }
@@ -429,6 +432,7 @@ async function verAmigo() {
 function etiqueta(r, festa) {
   const loja = r.loja_aberta
     ? `<div class="lj">Loja em aberto</div><div class="lj-sub">Qualquer loja, desde que dê para trocar</div>`
+    : r.loja && r.loja2 ? `<div class="lj">${esc(r.loja)}</div><div class="lj-ou">ou</div><div class="lj">${esc(r.loja2)}</div><div class="lj-sub">Compre em uma das duas</div>`
     : r.loja ? `<div class="lj">${esc(r.loja)}</div><div class="lj-sub">Compre nesta loja</div>`
     : `<div class="lj">Loja ainda não escolhida</div><div class="lj-sub">Volte aqui depois para ver a loja</div>`;
   abrir(`
