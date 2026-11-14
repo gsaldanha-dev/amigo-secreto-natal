@@ -165,7 +165,7 @@ textarea{resize:vertical;min-height:80px}
     </svg>
     <div class="sobre">Família · Natal 2026</div>
     <h1 class="foil">Amigo Secreto</h1>
-    <div class="contagem" id="contagem"><b class="foil">–</b><span>dias até 24 de dezembro</span></div>
+    <div class="contagem" id="contagem"><b class="foil">–</b><span>dias até a entrega · 25/12 à tarde</span></div>
     <div class="progresso" id="progresso">&nbsp;</div>
   </header>
 
@@ -182,8 +182,9 @@ textarea{resize:vertical;min-height:80px}
       <div class="regra"><h3>Em torno de R$ 200</h3><p>Esse é o valor de referência do presente. Nem muito abaixo, nem muito acima.</p></div>
       <div class="regra"><h3>A loja é de quem recebe</h3><p>Cada um escolhe uma loja no seu perfil, e quem te tirar compra o presente lá. Quem preferir deixa <em>em aberto</em>: aí vale qualquer loja, desde que dê para trocar.</p></div>
       <div class="regra"><h3>Sempre com troca</h3><p>Peça a etiqueta ou o cupom de troca. Evite liquidação, outlet, “promoção sem troca” e itens personalizados, que normalmente não trocam.</p></div>
-      <div class="regra destaque"><h3>Atenção ao prazo de troca</h3><p>Confira na hora da compra até quando a troca vale. Ela precisa cobrir o período depois do Natal, de preferência até o meio de janeiro. Exemplo: comprar em 20/11 com 30 dias de troca acaba em 20/12, antes da festa. Pergunte pela “troca de Natal” estendida, ou deixe para comprar mais perto da data.</p></div>
-      <div class="regra destaque"><h3>Até 24 de dezembro</h3><p>Dá para sortear e comprar até 24/12. O sorteio fecha depois disso, então não deixe para a última hora: quem sortear tarde precisa de um tempo para comprar.</p></div>
+      <div class="regra destaque"><h3>Atenção ao prazo de troca</h3><p>Confira na hora da compra até quando a troca vale. Ela precisa valer depois da entrega, no dia 25/12, de preferência até o meio de janeiro. Exemplo: comprar em 20/11 com 30 dias de troca acaba em 20/12, antes da entrega. Pergunte pela “troca de Natal” estendida, ou deixe para comprar mais perto da data.</p></div>
+      <div class="regra destaque"><h3>Sortear e comprar até 24/12</h3><p>O sorteio fecha no fim do dia 24 de dezembro. Não deixe para a última hora: quem sortear tarde precisa de um tempo para comprar.</p></div>
+      <div class="regra destaque"><h3>Entrega: 25/12 à tarde</h3><p>Os presentes são entregues no dia de Natal, à tarde. Leve o seu já embrulhado, com a etiqueta ou o cupom de troca junto.</p></div>
       <div class="regra"><h3>Segredo é segredo</h3><p>Cada um entra com um PIN de 4 dígitos só seu. Ninguém tira a si mesmo, e o site só mostra o seu amigo secreto para você.</p></div>
     </div>
   </section>
@@ -228,13 +229,13 @@ function avatar(p, cls = "") {
 function contagem() {
   const hoje = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }));
   hoje.setHours(0,0,0,0);
-  const alvo = new Date(2026, 11, 24);
+  const alvo = new Date(2026, 11, 25);
   const d = Math.round((alvo - hoje) / 864e5);
   const el = $("#contagem");
-  if (d > 1) el.innerHTML = `<b class="foil">${d}</b><span>dias até 24 de dezembro</span>`;
-  else if (d === 1) el.innerHTML = `<b class="foil">1</b><span>dia até 24 de dezembro</span>`;
-  else if (d === 0) el.innerHTML = `<b class="foil">Hoje</b><span>é o último dia para sortear</span>`;
-  else el.innerHTML = `<b class="foil">Feliz Natal</b><span>o sorteio está encerrado</span>`;
+  if (d > 1) el.innerHTML = `<b class="foil">${d}</b><span>dias até a entrega · 25/12 à tarde</span>`;
+  else if (d === 1) el.innerHTML = `<b class="foil">Amanhã</b><span>é a entrega · hoje é o último dia para sortear</span>`;
+  else if (d === 0) el.innerHTML = `<b class="foil">Hoje</b><span>à tarde é a entrega dos presentes</span>`;
+  else el.innerHTML = `<b class="foil">Feliz Natal</b><span>o amigo secreto já aconteceu</span>`;
 }
 const encerrado = () => new Date() > PRAZO;
 
@@ -436,7 +437,7 @@ function etiqueta(r, festa) {
       <h3>${esc(r.nome)}</h3>
       ${avatar(r)}
       ${loja}
-      <p class="lembra">Em torno de R$ 200 · peça troca · confira se o prazo de troca vai até depois do Natal</p>
+      <p class="lembra">Em torno de R$ 200 · peça troca · a troca precisa valer depois de 25/12<br>Entrega: 25 de dezembro, à tarde</p>
     </div>
     <div class="rodape"><button class="btn" id="bFim">Guardar segredo</button></div>`);
   $("#bFim").onclick = fechar;
