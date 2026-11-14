@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#071a12">
+<title>Amigo Secreto · Natal 2026</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='36' r='22' fill='%23c9a24a'/%3E%3Crect x='26' y='8' width='12' height='8' rx='2' fill='%23f3dfa2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#071a12;--bg2:#0c2a1f;--wine:#6e1423;--wine2:#8f1d30;
+  --gold:#d6b25e;--gold-hi:#f5e2a8;--gold-lo:#8d6a22;
+  --ivory:#f7efe0;--muted:#c9bfa8;--line:rgba(214,178,94,.35);
+  --foil:linear-gradient(135deg,#8d6a22 0%,#f5e2a8 28%,#c9a24a 52%,#fff1c4 70%,#9c7628 100%);
+  --serif:"Cormorant Garamond",Georgia,serif;--sans:"Jost",system-ui,sans-serif;
+}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+html{background:var(--bg)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(1200px 700px at 50% -10%,#16422f 0%,var(--bg2) 40%,var(--bg) 100%)}
+body{color:var(--ivory);font:300 16px/1.6 var(--sans);overflow-x:clip;min-height:100vh;
+  padding-bottom:env(safe-area-inset-bottom)}
+#neve{position:fixed;inset:0;pointer-events:none;z-index:0}
+main{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:0 max(5vw,18px) 60px}
+.foil{background:var(--foil);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;line-height:1.05}
+
+/* hero */
+header{text-align:center;padding:calc(env(safe-area-inset-top) + 18px) 0 8px}
+.enfeites{display:block;margin:0 auto;width:min(520px,100%);height:auto}
+.enfeites .bola{transform-origin:top center;animation:balanca 6s ease-in-out infinite}
+.enfeites .bola:nth-child(2n){animation-delay:-2s}.enfeites .bola:nth-child(3n){animation-delay:-4s}
+@keyframes balanca{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg)}}
+.sobre{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--gold);letter-spacing:.02em;margin-top:-6px}
+h1{font-size:clamp(46px,10vw,92px);font-style:italic;font-weight:500;padding:4px 0 6px}
+.contagem{display:inline-flex;align-items:baseline;gap:10px;margin-top:10px;padding:10px 22px;border:1px solid var(--line);
+  border-radius:999px;background:rgba(7,26,18,.55);backdrop-filter:blur(6px)}
+.contagem b{font-family:var(--serif);font-size:30px;font-weight:600}
+.contagem span{color:var(--muted);font-size:15px}
+.progresso{margin:14px auto 0;color:var(--muted);font-size:14px}
+
+/* minha área */
+.minha{margin:34px 0 0;border-radius:22px;padding:2px;background:var(--foil)}
+.minha-in{border-radius:20px;background:linear-gradient(160deg,#5c1020,#3a0913 70%);padding:22px;display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center}
+.minha h2{font-size:30px}
+.minha p{margin:2px 0 0;color:#ead9c0;font-size:15px}
+.acoes{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.convite{margin:34px 0 0;text-align:center;color:var(--muted);font-family:var(--serif);font-size:22px;font-style:italic}
+
+/* botões */
+.btn{appearance:none;border:0;cursor:pointer;font:500 15px/1 var(--sans);letter-spacing:.03em;min-height:46px;padding:0 22px;
+  border-radius:999px;color:#2a1d05;background:var(--foil);background-size:160% 160%;box-shadow:0 6px 20px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.5);
+  transition:transform .15s,background-position .6s}
+.btn:hover{background-position:100% 0;transform:translateY(-1px)}
+.btn:focus-visible,.card:focus-visible,input:focus-visible,textarea:focus-visible,.ghost:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px}
+.btn[disabled]{opacity:.55;cursor:wait}
+.ghost{appearance:none;background:transparent;border:1px solid var(--line);color:var(--ivory);font:400 15px/1 var(--sans);
+  min-height:46px;padding:0 20px;border-radius:999px;cursor:pointer}
+.ghost:hover{border-color:var(--gold)}
+.link{background:none;border:0;color:var(--gold);font:400 14px var(--sans);cursor:pointer;text-decoration:underline;padding:8px}
+
+/* participantes */
+.secao{margin-top:54px}
+.secao-tit{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.secao-tit h2{font-size:clamp(30px,5vw,40px);white-space:nowrap}
+.secao-tit::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:16px}
+.card{position:relative;text-align:center;padding:22px 16px 18px;border-radius:18px;cursor:pointer;color:inherit;font:inherit;
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.015));border:1px solid var(--line);transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:var(--gold)}
+.card.eu{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset,0 10px 30px rgba(0,0,0,.3)}
+.av{width:92px;height:92px;margin:0 auto 12px;border-radius:50%;padding:3px;background:var(--foil)}
+.av>div{width:100%;height:100%;border-radius:50%;background:#123a2a center/cover no-repeat;display:grid;place-items:center;
+  font-family:var(--serif);font-size:38px;font-style:italic;color:var(--gold-hi);border:3px solid var(--bg)}
+.card h3{font-size:26px}
+.card .loja{margin-top:6px;font-size:14px;color:var(--muted);min-height:22px}
+.card .loja em{font-style:normal;color:var(--gold-hi)}
+.selos{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.selo{font-size:12px;letter-spacing:.04em;padding:4px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.selo.on{border-color:transparent;background:rgba(214,178,94,.18);color:var(--gold-hi)}
+
+/* regras */
+.regras{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
+.regra{padding:22px;border-radius:18px;background:rgba(7,26,18,.55);border:1px solid var(--line)}
+.regra h3{font-size:24px;color:var(--gold-hi);margin-bottom:6px}
+.regra p{margin:0;color:#e3d8c2;font-size:15.5px}
+.regra.destaque{background:linear-gradient(160deg,rgba(110,20,35,.55),rgba(7,26,18,.6))}
+footer{margin-top:50px;text-align:center;color:var(--muted);font-size:13.5px}
+
+/* modal */
+.veu{position:fixed;inset:0;z-index:20;display:none;place-items:center;padding:18px;background:rgba(3,12,8,.78);backdrop-filter:blur(5px)}
+.veu.aberto{display:grid;animation:surge .25s ease-out}
+@keyframes surge{from{opacity:0}to{opacity:1}}
+.caixa{width:min(460px,100%);max-height:calc(100vh - 36px);overflow:auto;border-radius:22px;padding:2px;background:var(--foil)}
+.caixa-in{border-radius:20px;background:linear-gradient(180deg,#0f3324,#08201a);padding:26px 22px 22px;position:relative}
+.fechar{position:absolute;top:10px;right:10px;width:44px;height:44px;border-radius:50%;border:0;background:transparent;color:var(--muted);font-size:26px;cursor:pointer}
+.caixa h2{font-size:32px;text-align:center;margin:4px 30px 6px}
+.caixa .sub{text-align:center;color:var(--muted);margin:0 0 18px;font-size:15px}
+label{display:block;font-size:14px;color:var(--muted);margin:14px 0 6px}
+input[type=text],input[type=password],textarea,input[inputmode]{width:100%;font:400 16px var(--sans);color:var(--ivory);background:rgba(0,0,0,.25);
+  border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-height:46px}
+textarea{resize:vertical;min-height:80px}
+.pin{text-align:center;font-size:28px!important;letter-spacing:.5em;font-family:var(--serif)!important}
+.erro{color:#ffb4a8;font-size:14px;min-height:20px;margin:8px 0 0;text-align:center}
+.foto-ed{display:flex;align-items:center;gap:16px}
+.foto-ed .av{margin:0;flex:none}
+.troca{display:flex;gap:12px;align-items:flex-start;margin-top:14px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);cursor:pointer}
+.troca input{width:22px;height:22px;accent-color:var(--gold);flex:none;margin-top:2px}
+.troca span{font-size:14.5px;color:#e3d8c2}
+.rodape{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+
+/* sorteio */
+.roleta{height:90px;margin:10px 0 4px;border-radius:16px;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;
+  background:radial-gradient(circle at 50% 50%,rgba(214,178,94,.15),transparent 70%)}
+.roleta b{font-family:var(--serif);font-size:46px;font-style:italic;font-weight:500}
+.etiqueta{margin-top:6px;background:linear-gradient(170deg,#fbf5e8,#efe2c6);color:#2b1d10;border-radius:16px;padding:24px 20px;text-align:center;
+  position:relative;box-shadow:0 18px 40px rgba(0,0,0,.4);animation:abre .7s cubic-bezier(.2,.9,.3,1.2)}
+.etiqueta::before{content:"";position:absolute;top:12px;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:#08201a;box-shadow:0 0 0 3px var(--gold)}
+@keyframes abre{from{transform:scale(.6) rotate(-6deg);opacity:0}to{transform:none;opacity:1}}
+.etiqueta small{display:block;margin-top:18px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#8a6a2a}
+.etiqueta h3{font-size:48px;font-style:italic;font-weight:600;color:var(--wine);margin:4px 0 10px}
+.etiqueta .av{width:110px;height:110px}
+.etiqueta .av>div{border-color:#f5ecd9}
+.etiqueta .lj{font-family:var(--serif);font-size:26px;font-weight:600;color:#123a2a}
+.etiqueta .lj-sub{font-size:14px;color:#5a4a33;margin-top:2px}
+.etiqueta .dica{margin:14px 0 0;padding-top:12px;border-top:1px dashed #c8b48a;font-size:14.5px;color:#4a3b25}
+.etiqueta .lembra{margin-top:14px;font-size:13px;color:#6b5636}
+#brilho{position:fixed;inset:0;pointer-events:none;z-index:30}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:40;padding:12px 20px;border-radius:999px;
+  background:#0f3324;border:1px solid var(--gold);color:var(--ivory);font-size:14.5px;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.on{opacity:1}
+.carregando{text-align:center;color:var(--muted);padding:30px}
+
+@media(max-width:640px){
+  .minha-in{grid-template-columns:auto minmax(0,1fr)}
+  .acoes{grid-column:1/-1;justify-content:stretch}.acoes>*{flex:1;white-space:nowrap;padding:0 14px;font-size:14px}
+  .grade{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .card{padding:18px 10px 14px}.av{width:76px;height:76px}.av>div{font-size:30px}.card h3{font-size:22px}
+  .selo{font-size:11px;padding:3px 8px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="neve"></canvas>
+<canvas id="brilho"></canvas>
+<main>
+  <header>
+    <svg class="enfeites" viewBox="0 0 520 150" aria-hidden="true">
+      <defs>
+        <linearGradient id="ou" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8d6a22"/><stop offset=".35" stop-color="#f5e2a8"/><stop offset=".6" stop-color="#c9a24a"/><stop offset="1" stop-color="#7a5a1c"/></linearGradient>
+        <radialGradient id="vi" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#d23a52"/><stop offset=".5" stop-color="#8f1d30"/><stop offset="1" stop-color="#3a0913"/></radialGradient>
+        <radialGradient id="ve" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#2f8a63"/><stop offset=".5" stop-color="#145a3e"/><stop offset="1" stop-color="#062418"/></radialGradient>
+        <radialGradient id="ov" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff3c8"/><stop offset=".45" stop-color="#d6b25e"/><stop offset="1" stop-color="#6b4f17"/></radialGradient>
+        <g id="b"><rect x="-6" y="-6" width="12" height="9" rx="2" fill="url(#ou)"/><circle r="22" cy="22"/><ellipse cx="-7" cy="12" rx="6" ry="3.5" fill="#fff" opacity=".35" transform="rotate(-30 -7 12)"/></g>
+      </defs>
+      <path d="M0 6 Q130 34 260 10 T520 6" fill="none" stroke="url(#ou)" stroke-width="1.5"/>
+      <g class="bola" style="transform-box:fill-box"><line x1="70" y1="20" x2="70" y2="62" stroke="url(#ou)"/><use href="#b" x="70" y="68" fill="url(#vi)"/></g>
+      <g class="bola" style="transform-box:fill-box"><line x1="160" y1="26" x2="160" y2="40" stroke="url(#ou)"/><use href="#b" x="160" y="46" fill="url(#ov)"/></g>
+      <g class="bola" style="transform-box:fill-box"><line x1="260" y1="10" x2="260" y2="80" stroke="url(#ou)"/><use href="#b" x="260" y="86" fill="url(#ve)"/></g>
+      <g class="bola" style="transform-box:fill-box"><line x1="360" y1="22" x2="360" y2="44" stroke="url(#ou)"/><use href="#b" x="360" y="50" fill="url(#vi)"/></g>
+      <g class="bola" style="transform-box:fill-box"><line x1="450" y1="12" x2="450" y2="60" stroke="url(#ou)"/><use href="#b" x="450" y="66" fill="url(#ov)"/></g>
+    </svg>
+    <div class="sobre">Família · Natal 2026</div>
+    <h1 class="foil">Amigo Secreto</h1>
+    <div class="contagem" id="contagem"><b class="foil">–</b><span>dias até 24 de dezembro</span></div>
+    <div class="progresso" id="progresso">&nbsp;</div>
+  </header>
+
+  <section id="minha"></section>
+
+  <section class="secao">
+    <div class="secao-tit"><h2 class="foil">Participantes</h2></div>
+    <div class="grade" id="grade"><div class="carregando">Abrindo os presentes…</div></div>
+  </section>
+
+  <section class="secao">
+    <div class="secao-tit"><h2 class="foil">As regras</h2></div>
+    <div class="regras">
+      <div class="regra"><h3>Em torno de R$ 200</h3><p>Esse é o valor de referência do presente. Nem muito abaixo, nem muito acima.</p></div>
+      <div class="regra"><h3>A loja é de quem recebe</h3><p>Cada um escolhe uma loja no seu perfil, e quem te tirar compra o presente lá. Quem preferir deixa <em>em aberto</em>: aí vale qualquer loja, desde que dê para trocar.</p></div>
+      <div class="regra"><h3>Sempre com troca</h3><p>Peça a etiqueta ou o cupom de troca. Evite liquidação, outlet, “promoção sem troca” e itens personalizados, que normalmente não trocam.</p></div>
+      <div class="regra destaque"><h3>Atenção ao prazo de troca</h3><p>Confira na hora da compra até quando a troca vale. Ela precisa cobrir o período depois do Natal, de preferência até o meio de janeiro. Exemplo: comprar em 20/11 com 30 dias de troca acaba em 20/12, antes da festa. Pergunte pela “troca de Natal” estendida, ou deixe para comprar mais perto da data.</p></div>
+      <div class="regra destaque"><h3>Até 24 de dezembro</h3><p>Dá para sortear e comprar até 24/12. O sorteio fecha depois disso, então não deixe para a última hora: quem sortear tarde precisa de um tempo para comprar.</p></div>
+      <div class="regra"><h3>Segredo é segredo</h3><p>Cada um entra com um PIN de 4 dígitos só seu. Ninguém tira a si mesmo, e o site só mostra o seu amigo secreto para você.</p></div>
+    </div>
+  </section>
+
+  <footer>Esqueceu o PIN? Fale com o Gustavo.</footer>
+</main>
+
+<div class="veu" id="veu" role="dialog" aria-modal="true"><div class="caixa"><div class="caixa-in" id="modal"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+{
+const URL_SB = "https://adamlaxpbvckihfscljf.supabase.co";
+const KEY = "sb_publishable_EiP8xyw4yO0I_c0-CVUupw_tNY9F3Fz";
+const PRAZO = new Date("2026-12-24T23:59:59-03:00");
+const LOJAS = ["Granado","Natura","O Boticário","Sephora","Renner","Zara","C&A","Riachuelo","Livraria da Travessa","Livraria Cultura","Tok&Stok","Camicado","L'Occitane","Havaianas","Vivara","Pandora","Centauro","Decathlon","Amazon","Mercado Livre"];
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let pessoas = [];
+let eu = null;
+try { eu = JSON.parse(localStorage.getItem("amigo_eu") || "null"); } catch (e) {}
+const guardarEu = v => { eu = v; try { v ? localStorage.setItem("amigo_eu", JSON.stringify(v)) : localStorage.removeItem("amigo_eu"); } catch (e) {} };
+
+async function rpc(fn, args = {}) {
+  const r = await fetch(`${URL_SB}/rest/v1/rpc/${fn}`, {
+    method: "POST", headers: { apikey: KEY, "Content-Type": "application/json" }, body: JSON.stringify(args)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+
+function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("on"), 2600); }
+
+function avatar(p, cls = "") {
+  const bg = p && p.foto ? `style="background-image:url('${p.foto}')"` : "";
+  const ini = p && !p.foto ? esc(p.nome[0]) : "";
+  return `<div class="av ${cls}"><div ${bg}>${ini}</div></div>`;
+}
+function textoLoja(p) {
+  if (p.loja_aberta) return `<em>Loja em aberto</em>`;
+  if (p.loja) return `<em>${esc(p.loja)}</em>`;
+  return "Ainda escolhendo a loja";
+}
+
+function contagem() {
+  const hoje = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }));
+  hoje.setHours(0,0,0,0);
+  const alvo = new Date(2026, 11, 24);
+  const d = Math.round((alvo - hoje) / 864e5);
+  const el = $("#contagem");
+  if (d > 1) el.innerHTML = `<b class="foil">${d}</b><span>dias até 24 de dezembro</span>`;
+  else if (d === 1) el.innerHTML = `<b class="foil">1</b><span>dia até 24 de dezembro</span>`;
+  else if (d === 0) el.innerHTML = `<b class="foil">Hoje</b><span>é o último dia para sortear</span>`;
+  else el.innerHTML = `<b class="foil">Feliz Natal</b><span>o sorteio está encerrado</span>`;
+}
+const encerrado = () => new Date() > PRAZO;
+
+async function carregar() {
+  try { pessoas = await rpc("amigo_lista"); }
+  catch (e) { $("#grade").innerHTML = `<div class="carregando">Não consegui carregar agora. Atualize a página em instantes.</div>`; return; }
+  if (eu && !pessoas.some(p => p.id === eu.id && p.reivindicado)) guardarEu(null);
+  render();
+}
+
+function render() {
+  const n = pessoas.filter(p => p.sorteou).length;
+  $("#progresso").textContent = `${n} de ${pessoas.length} já sortearam`;
+  $("#grade").innerHTML = pessoas.map(p => `
+    <button class="card ${eu && eu.id === p.id ? "eu" : ""}" data-id="${p.id}" aria-label="${esc(p.nome)}">
+      ${avatar(p)}
+      <h3>${esc(p.nome)}</h3>
+      <div class="loja">${textoLoja(p)}</div>
+      <div class="selos">
+        <span class="selo ${p.perfil_pronto ? "on" : ""}">${p.perfil_pronto ? "Perfil pronto" : p.reivindicado ? "Montando perfil" : "Ainda não entrou"}</span>
+        ${p.sorteou ? `<span class="selo on">Já sorteou</span>` : ""}
+      </div>
+    </button>`).join("");
+  renderMinha();
+}
+
+function renderMinha() {
+  const box = $("#minha");
+  if (!eu) { box.innerHTML = `<p class="convite">Toque no seu nome para entrar.</p>`; return; }
+  const p = pessoas.find(x => x.id === eu.id);
+  const precisaLoja = !p.perfil_pronto;
+  box.innerHTML = `
+    <div class="minha"><div class="minha-in">
+      ${avatar(p)}
+      <div>
+        <h2>Olá, ${esc(p.nome)}</h2>
+        <p>${precisaLoja ? "Escolha sua loja (ou deixe em aberto) para quem te tirar saber onde comprar." : p.loja_aberta ? "Sua loja está em aberto: vale qualquer loja com troca." : "Sua loja: " + esc(p.loja)}</p>
+      </div>
+      <div class="acoes">
+        <button class="ghost" id="bPerfil">${precisaLoja ? "Montar perfil" : "Editar perfil"}</button>
+        <button class="btn" id="bSorteio">${p.sorteou ? "Ver meu amigo secreto" : "Sortear"}</button>
+      </div>
+    </div></div>
+    <div style="text-align:center"><button class="link" id="bSair">Não é você? Trocar de pessoa</button></div>`;
+  $("#bPerfil").onclick = abrirPerfil;
+  $("#bSorteio").onclick = () => p.sorteou ? verAmigo() : abrirSorteio();
+  $("#bSair").onclick = () => { guardarEu(null); render(); };
+}
+
+/* modal */
+const veu = $("#veu"), modal = $("#modal");
+function abrir(html) { modal.innerHTML = `<button class="fechar" aria-label="Fechar">×</button>` + html; veu.classList.add("aberto"); modal.querySelector(".fechar").onclick = fechar; }
+function fechar() { veu.classList.remove("aberto"); modal.innerHTML = ""; }
+veu.addEventListener("click", e => { if (e.target === veu) fechar(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") fechar(); });
+
+$("#grade").addEventListener("click", e => {
+  const c = e.target.closest(".card"); if (!c) return;
+  const p = pessoas.find(x => x.id === +c.dataset.id);
+  if (eu && eu.id === p.id) { abrirPerfil(); return; }
+  abrirEntrada(p);
+});
+
+function abrirEntrada(p) {
+  const novo = !p.reivindicado;
+  abrir(`
+    ${avatar(p)}
+    <h2 class="foil">${novo ? "Você é " + esc(p.nome) + "?" : "Oi, " + esc(p.nome)}</h2>
+    <p class="sub">${novo ? "Crie um PIN de 4 dígitos. Ele protege o seu sorteio, então guarde bem." : "Digite seu PIN para entrar neste aparelho."}</p>
+    <form id="fPin">
+      <input class="pin" id="pin1" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••" aria-label="PIN">
+      ${novo ? `<label for="pin2">Repita o PIN</label><input class="pin" id="pin2" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••">` : ""}
+      <p class="erro" id="erro"></p>
+      <div class="rodape"><button class="btn" id="bOk">${novo ? "Sou eu, entrar" : "Entrar"}</button></div>
+    </form>`);
+  setTimeout(() => $("#pin1").focus(), 50);
+  $("#fPin").onsubmit = async ev => {
+    ev.preventDefault();
+    const pin = $("#pin1").value.trim(), err = $("#erro"), b = $("#bOk");
+    if (!/^\d{4}$/.test(pin)) { err.textContent = "O PIN tem 4 números."; return; }
+    if (novo && pin !== $("#pin2").value.trim()) { err.textContent = "Os dois PINs não batem."; return; }
+    b.disabled = true; err.textContent = "";
+    try {
+      let ok;
+      if (novo) {
+        const r = await rpc("amigo_reivindicar", { p_id: p.id, p_pin: pin });
+        if (r === "ja_reivindicado") { err.textContent = "Alguém já entrou como " + p.nome + ". Se não foi você, fale com o Gustavo."; b.disabled = false; return; }
+        ok = r === "ok";
+      } else ok = await rpc("amigo_entrar", { p_id: p.id, p_pin: pin });
+      if (!ok) { err.textContent = "PIN incorreto."; b.disabled = false; return; }
+      guardarEu({ id: p.id, pin });
+      fechar(); await carregar();
+      const atual = pessoas.find(x => x.id === p.id);
+      if (!atual.perfil_pronto) abrirPerfil(); else toast("Bem-vindo(a) de volta, " + p.nome);
+    } catch (e2) { err.textContent = "Falhou a conexão. Tente de novo."; b.disabled = false; }
+  };
+}
+
+function abrirPerfil() {
+  const p = pessoas.find(x => x.id === eu.id);
+  let novaFoto = null;
+  abrir(`
+    <h2 class="foil">Seu perfil</h2>
+    <p class="sub">É isso que aparece para quem te tirar.</p>
+    <form id="fPerfil">
+      <div class="foto-ed">
+        <div id="prev">${avatar(p)}</div>
+        <div><label class="ghost" style="display:inline-flex;align-items:center;margin:0;color:var(--ivory)" for="arq">Escolher foto</label>
+        <input type="file" id="arq" accept="image/*" hidden></div>
+      </div>
+      <label for="loja">Sua loja</label>
+      <input type="text" id="loja" list="lojas" maxlength="80" placeholder="Ex.: Granado" value="${esc(p.loja || "")}" ${p.loja_aberta ? "disabled" : ""}>
+      <datalist id="lojas">${LOJAS.map(l => `<option value="${esc(l)}">`).join("")}</datalist>
+      <label class="troca"><input type="checkbox" id="aberta" ${p.loja_aberta ? "checked" : ""}>
+        <span>Deixar em aberto: quem me tirar pode comprar em qualquer loja, desde que dê para trocar.</span></label>
+      <label for="dica">Dica para quem te tirar (opcional)</label>
+      <textarea id="dica" maxlength="280" placeholder="Ex.: tamanho M, prefiro perfumes suaves, gosto de verde…">${esc(p.dica || "")}</textarea>
+      <p class="erro" id="erro"></p>
+      <div class="rodape"><button class="btn" id="bSalvar">Salvar perfil</button></div>
+    </form>`);
+  const loja = $("#loja"), aberta = $("#aberta");
+  aberta.onchange = () => { loja.disabled = aberta.checked; if (!aberta.checked) loja.focus(); };
+  $("#arq").onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try { novaFoto = await reduzir(f); $("#prev").innerHTML = avatar({ ...p, foto: novaFoto }); }
+    catch (er) { $("#erro").textContent = "Não consegui ler essa imagem. Tente outra."; }
+  };
+  $("#fPerfil").onsubmit = async ev => {
+    ev.preventDefault();
+    const err = $("#erro"), b = $("#bSalvar");
+    if (!aberta.checked && !loja.value.trim()) { err.textContent = "Escreva uma loja ou marque “deixar em aberto”."; return; }
+    b.disabled = true; err.textContent = "";
+    try {
+      const ok = await rpc("amigo_salvar_perfil", { p_id: eu.id, p_pin: eu.pin, p_foto: novaFoto, p_loja: loja.value, p_loja_aberta: aberta.checked, p_dica: $("#dica").value });
+      if (!ok) { guardarEu(null); fechar(); await carregar(); toast("Sessão expirada. Entre de novo."); return; }
+      fechar(); await carregar(); toast("Perfil salvo");
+    } catch (e2) { err.textContent = "Falhou ao salvar. Tente de novo."; b.disabled = false; }
+  };
+}
+
+function reduzir(file) {
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = 360, c = document.createElement("canvas"); c.width = c.height = s;
+      const m = Math.min(img.width, img.height);
+      c.getContext("2d").drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, s, s);
+      URL.revokeObjectURL(url); res(c.toDataURL("image/jpeg", 0.82));
+    };
+    img.onerror = rej; img.src = url;
+  });
+}
+
+function abrirSorteio() {
+  if (encerrado()) { abrir(`<h2 class="foil">Sorteio encerrado</h2><p class="sub">O prazo era 24 de dezembro.</p>`); return; }
+  abrir(`
+    <h2 class="foil">Hora do sorteio</h2>
+    <p class="sub">Confira se ninguém está olhando a sua tela.</p>
+    <div class="roleta"><b class="foil" id="nomeRoda">?</b></div>
+    <p class="erro" id="erro"></p>
+    <div class="rodape"><button class="btn" id="bGirar">Sortear meu amigo secreto</button></div>`);
+  $("#bGirar").onclick = async () => {
+    const b = $("#bGirar"); b.disabled = true;
+    const outros = pessoas.filter(x => x.id !== eu.id).map(x => x.nome);
+    let i = 0, atraso = 55, parar = false, res = null;
+    const roda = $("#nomeRoda");
+    const passo = () => {
+      roda.textContent = outros[i++ % outros.length];
+      if (parar && atraso > 260) { mostrar(res); return; }
+      if (parar) atraso *= 1.18;
+      setTimeout(passo, atraso);
+    };
+    passo();
+    try {
+      const [r] = await rpc("amigo_meu_amigo", { p_id: eu.id, p_pin: eu.pin, p_sortear: true });
+      if (r.status === "encerrado") { abrir(`<h2 class="foil">Sorteio encerrado</h2><p class="sub">O prazo era 24 de dezembro.</p>`); return; }
+      if (r.status === "pin") { guardarEu(null); fechar(); await carregar(); toast("Entre de novo com seu PIN."); return; }
+      res = r; setTimeout(() => parar = true, 1400);
+    } catch (e) { parar = true; res = null; $("#erro").textContent = "Falhou a conexão. Tente de novo."; b.disabled = false; }
+  };
+  function mostrar(r) { if (!r) return; etiqueta(r, true); carregar(); }
+}
+
+async function verAmigo() {
+  abrir(`<div class="carregando">Abrindo o envelope…</div>`);
+  try {
+    const [r] = await rpc("amigo_meu_amigo", { p_id: eu.id, p_pin: eu.pin, p_sortear: false });
+    if (r.status === "ok") etiqueta(r, false);
+    else if (r.status === "pin") { guardarEu(null); fechar(); carregar(); toast("Entre de novo com seu PIN."); }
+    else abrirSorteio();
+  } catch (e) { modal.querySelector(".carregando").textContent = "Falhou a conexão. Tente de novo."; }
+}
+
+function etiqueta(r, festa) {
+  const loja = r.loja_aberta
+    ? `<div class="lj">Loja em aberto</div><div class="lj-sub">Qualquer loja, desde que dê para trocar</div>`
+    : r.loja ? `<div class="lj">${esc(r.loja)}</div><div class="lj-sub">Compre nesta loja</div>`
+    : `<div class="lj">Loja ainda não escolhida</div><div class="lj-sub">Volte aqui depois para ver a loja</div>`;
+  abrir(`
+    <div class="etiqueta">
+      <small>Você tirou</small>
+      <h3>${esc(r.nome)}</h3>
+      ${avatar(r)}
+      ${loja}
+      ${r.dica ? `<p class="dica">${esc(r.dica)}</p>` : ""}
+      <p class="lembra">Em torno de R$ 200 · peça troca · confira se o prazo de troca vai até depois do Natal</p>
+    </div>
+    <div class="rodape"><button class="btn" id="bFim">Guardar segredo</button></div>`);
+  $("#bFim").onclick = fechar;
+  if (festa) confete();
+}
+
+/* confete dourado */
+function confete() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c = $("#brilho"), x = c.getContext("2d"); c.width = innerWidth; c.height = innerHeight;
+  const cores = ["#f5e2a8", "#d6b25e", "#fff1c4", "#8f1d30", "#2f8a63"];
+  const ps = Array.from({ length: 140 }, () => ({ x: c.width / 2, y: c.height / 2.4, vx: (Math.random() - .5) * 14, vy: Math.random() * -13 - 3, s: Math.random() * 6 + 3, r: Math.random() * 6, c: cores[Math.random() * cores.length | 0] }));
+  let t = 0;
+  (function f() {
+    x.clearRect(0, 0, c.width, c.height);
+    ps.forEach(p => { p.vy += .32; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += .15; x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c; x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); x.restore(); });
+    if (++t < 160) requestAnimationFrame(f); else x.clearRect(0, 0, c.width, c.height);
+  })();
+}
+
+/* neve */
+(function neve() {
+  const c = $("#neve"), x = c.getContext("2d");
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let fl = [];
+  const tam = () => { c.width = innerWidth; c.height = innerHeight; fl = Array.from({ length: Math.min(90, innerWidth / 12 | 0) }, () => ({ x: Math.random() * c.width, y: Math.random() * c.height, r: Math.random() * 1.8 + .4, v: Math.random() * .5 + .2, d: Math.random() * 6, g: Math.random() < .25 })); };
+  tam(); addEventListener("resize", tam);
+  (function f() {
+    x.clearRect(0, 0, c.width, c.height);
+    fl.forEach(p => { p.y += p.v; p.d += .01; p.x += Math.sin(p.d) * .3; if (p.y > c.height) { p.y = -4; p.x = Math.random() * c.width; }
+      x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7); x.fillStyle = p.g ? "rgba(245,226,168,.75)" : "rgba(255,255,255,.55)"; x.fill(); });
+    requestAnimationFrame(f);
+  })();
+})();
+
+contagem();
+carregar();
+}
+</script>
+</body>
+</html>
