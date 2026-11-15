@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="comum.css?v=4">
+<link rel="stylesheet" href="comum.css?v=5">
 <script>if (location.hash === "#lojas") location.replace("lojas/");</script>
 </head>
 <body>
@@ -50,7 +50,7 @@
       <div class="regra"><h3>A loja é de quem recebe</h3><p>Cada um escolhe até duas lojas no cadastro, e quem te tirar compra o presente em uma delas. Quem preferir deixa <em>em aberto</em>: aí vale qualquer loja, desde que dê para trocar.</p></div>
       <div class="regra"><h3>Sempre com troca</h3><p>Peça a etiqueta ou o cupom de troca. Evite liquidação, outlet, “promoção sem troca” e itens personalizados, que normalmente não trocam.</p></div>
       <div class="regra destaque"><h3>Atenção ao prazo de troca</h3><p>Confira na hora da compra até quando a troca vale. Ela precisa valer depois da entrega, no dia 25/12, de preferência até o meio de janeiro. Pergunte pela “troca de Natal” estendida.</p></div>
-      <div class="regra destaque"><h3>Sorteio: de 17/11 a 24/12</h3><p>O sorteio abre na terça-feira, 17 de novembro, às 8h da manhã, por outro link. Fica aberto até 24/12, mas não deixe para a última hora.</p></div>
+      <div class="regra destaque"><h3>Sorteio aberto até 24/12</h3><p>O sorteio já está aberto, pelo link do sorteio. Fica aberto até 24/12, mas não deixe para a última hora.</p></div>
       <div class="regra destaque"><h3>Entrega: 25/12 à tarde</h3><p>Os presentes são entregues no dia de Natal, à tarde. Leve o seu embrulhado, com a etiqueta ou o cupom de troca junto.</p></div>
     </div>
   </section>
@@ -58,7 +58,7 @@
   <footer>Esqueceu o PIN? Fale com o Gustavo.</footer>
 </main>
 
-<script src="comum.js?v=4"></script>
+<script src="comum.js?v=5"></script>
 <script>
 {
 const { $, esc, avatar, abrir, fechar, toast, rpc } = AS;
@@ -105,7 +105,8 @@ function renderMinha() {
       </div>
       <div class="acoes"><button class="btn" id="bPerfil">${p.perfil_pronto ? "Mudar meu cadastro" : "Terminar cadastro"}</button></div>
     </div></div>
-    <p class="aviso">O sorteio abre na <b>terça-feira, 17 de novembro, às 8h</b>, por outro link.</p>
+    <p class="aviso">O sorteio <b>já está aberto</b>.</p>
+    <div class="rodape"><a class="btn botao-grande" href="sorteio/">Ir para o sorteio</a></div>
     <div style="text-align:center"><button class="link" id="bSair">Não é você? Trocar de pessoa</button></div>`;
   $("#bPerfil").onclick = () => abrirPerfil(false);
   $("#bSair").onclick = () => { AS.guardarEu(null); render(); scrollTo({ top: 0, behavior: "smooth" }); };
@@ -176,8 +177,8 @@ function pronto(primeiraVez) {
     <h2 class="foil">Cadastro feito!</h2>
     <p class="sub">${AS.lojasFrase(p)}</p>
     ${primeiraVez ? `<p class="sub" style="margin-bottom:0">Seu PIN é</p><div class="pin-grande foil">${esc(eu.pin)}</div><p class="sub">Anote. Você vai usar no sorteio.</p>` : ""}
-    <p class="aviso" style="margin-top:6px">O sorteio abre na <b>terça-feira, 17 de novembro, às 8h</b>.</p>
-    <div class="rodape"><button class="btn botao-grande" id="bFim">Fechar</button></div>`);
+    <p class="aviso" style="margin-top:6px">O sorteio <b>já está aberto</b>.</p>
+    <div class="rodape"><a class="btn botao-grande" href="sorteio/">Ir para o sorteio</a><button class="ghost" id="bFim">Fechar</button></div>`);
   $("#bFim").onclick = () => { fechar(); scrollTo({ top: 0, behavior: "smooth" }); };
 }
 

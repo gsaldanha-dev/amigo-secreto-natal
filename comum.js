@@ -2,7 +2,7 @@
 window.AS = (() => {
   const URL_SB = "https://adamlaxpbvckihfscljf.supabase.co";
   const KEY = "sb_publishable_EiP8xyw4yO0I_c0-CVUupw_tNY9F3Fz";
-  const ABERTURA = new Date("2026-11-17T08:00:00-03:00"); // sorteio abre terça, 8h
+  const ABERTURA = new Date("2026-11-15T00:00:00-03:00"); // sorteio aberto (antecipado em 15/11)
   const PRAZO = new Date("2026-12-24T23:59:59-03:00");    // último dia para sortear
 
   const $ = s => document.querySelector(s);
@@ -12,7 +12,9 @@ window.AS = (() => {
   let eu = null;
   try { eu = JSON.parse(localStorage.getItem("amigo_eu") || "null"); } catch (e) {}
   const getEu = () => eu;
-  const guardarEu = v => { eu = v; try { v ? localStorage.setItem("amigo_eu", JSON.stringify(v)) : localStorage.removeItem("amigo_eu"); } catch (e) {} };
+  /* link pessoal (sem PIN): vale só nesta aba, não troca quem está salvo no aparelho */
+  const usarLink = v => { eu = { ...v, link: true }; };
+  const guardarEu = v => { eu = v; if (v && v.link) return; try { v ? localStorage.setItem("amigo_eu", JSON.stringify(v)) : localStorage.removeItem("amigo_eu"); } catch (e) {} };
 
   async function rpc(fn, args = {}) {
     const r = await fetch(`${URL_SB}/rest/v1/rpc/${fn}`, {
@@ -23,7 +25,7 @@ window.AS = (() => {
   }
   async function lista() {
     const ps = await rpc("amigo_lista");
-    if (eu && !ps.some(p => p.id === eu.id && p.reivindicado)) guardarEu(null);
+    if (eu && !eu.link && !ps.some(p => p.id === eu.id && p.reivindicado)) guardarEu(null);
     return ps;
   }
 
@@ -126,5 +128,5 @@ window.AS = (() => {
     })();
   }
 
-  return { ABERTURA, PRAZO, $, esc, rpc, lista, avatar, lojasFrase, abrir, fechar, toast, pedirPin, confete, eu: getEu, guardarEu };
+  return { ABERTURA, PRAZO, $, esc, rpc, lista, avatar, lojasFrase, abrir, fechar, toast, pedirPin, confete, eu: getEu, guardarEu, usarLink };
 })();

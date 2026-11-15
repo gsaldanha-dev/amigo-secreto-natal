@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../comum.css?v=4">
+<link rel="stylesheet" href="../comum.css?v=5">
 </head>
 <body>
 <main>
@@ -54,7 +54,7 @@
   <footer>Esqueceu o PIN? Fale com o Gustavo.</footer>
 </main>
 
-<script src="../comum.js?v=4"></script>
+<script src="../comum.js?v=5"></script>
 <script>
 {
 const { $, esc, avatar, abrir, fechar, toast, rpc } = AS;
@@ -68,7 +68,7 @@ async function carregar() {
   render();
 }
 
-/* antes de terça 8h: só o relógio */
+/* antes da abertura: só o relógio */
 function relogio() {
   const tm = Math.ceil(Math.max(0, AS.ABERTURA - Date.now()) / 6e4); // minutos que faltam
   const d = Math.floor(tm / 1440), h = Math.floor(tm / 60) % 24, m = tm % 60;
@@ -82,7 +82,7 @@ function render() {
   if (!aberto()) {
     $("#progresso").textContent = `${pessoas.filter(p => p.perfil_pronto).length} de ${pessoas.length} já se cadastraram`;
     top.innerHTML = `
-      <p class="aviso">O sorteio abre na <b>terça-feira, 17 de novembro, às 8h da manhã</b>.</p>
+      <p class="aviso">O sorteio ainda não abriu.</p>
       ${relogio()}
       <p class="convite">Ainda não fez o cadastro? Faça pelo link de cadastro.</p>`;
     nomes.hidden = true;
@@ -98,12 +98,12 @@ function render() {
       <div class="minha"><div class="minha-in">
         ${avatar(p)}
         <div><h2>Olá, ${esc(p.nome)}</h2>
-          <p>${p.sorteou ? "Você já sorteou. Toque para ver de novo." : "Confira se ninguém está olhando a sua tela."}</p></div>
+          <p>${eu.link ? `Este é o link do sorteio de ${esc(p.nome)}. ` : ""}${p.sorteou ? "Já sorteou. Toque para ver de novo." : "Confira se ninguém está olhando a tela."}</p></div>
         <div class="acoes"><button class="btn botao-grande" id="bSorteio">${p.sorteou ? "Ver quem eu tirei" : "Sortear"}</button></div>
       </div></div>
-      <div style="text-align:center"><button class="link" id="bSair">Não é você? Trocar de pessoa</button></div>`;
+      <div style="text-align:center">${eu.link ? `<a class="link" href="./">Sair do sorteio de ${esc(p.nome)}</a>` : `<button class="link" id="bSair">Não é você? Trocar de pessoa</button>`}</div>`;
     $("#bSorteio").onclick = () => p.sorteou ? verAmigo() : abrirSorteio();
-    $("#bSair").onclick = () => { AS.guardarEu(null); render(); };
+    if (!eu.link) $("#bSair").onclick = () => { AS.guardarEu(null); render(); };
     nomes.hidden = true;
     return;
   }
@@ -152,7 +152,7 @@ function abrirSorteio() {
     passo();
     try {
       const [r] = await rpc("amigo_meu_amigo", { p_id: eu.id, p_pin: eu.pin, p_sortear: true });
-      if (r.status === "fechado") { abrir(`<h2 class="foil">Ainda não abriu</h2><p class="sub">O sorteio abre na terça-feira, 17 de novembro, às 8h.</p>`); return; }
+      if (r.status === "fechado") { abrir(`<h2 class="foil">Ainda não abriu</h2><p class="sub">O sorteio ainda não abriu. Tente de novo mais tarde.</p>`); return; }
       if (r.status === "encerrado") { abrir(`<h2 class="foil">Sorteio fechado</h2><p class="sub">O prazo era 24 de dezembro.</p>`); return; }
       if (r.status === "pin") { AS.guardarEu(null); fechar(); await carregar(); toast("Entre de novo com seu PIN."); return; }
       res = r; setTimeout(() => parar = true, 1400);
@@ -190,7 +190,20 @@ function etiqueta(r, festa) {
   if (festa) AS.confete();
 }
 
-carregar();
+/* link pessoal: /sorteio/#<código> entra direto, sem PIN */
+async function iniciar() {
+  const cod = location.hash.slice(1);
+  if (/^[0-9a-f]{20,}$/.test(cod)) {
+    try {
+      const [p] = await rpc("amigo_por_token", { p_token: cod });
+      if (p) AS.usarLink({ id: p.id, pin: cod });
+      else toast("Este link não vale. Use o link do sorteio do grupo.");
+    } catch (e) { toast("A internet falhou. Atualize a página."); }
+  }
+  carregar();
+}
+iniciar();
+addEventListener("hashchange", () => location.reload());
 /* atualiza o relógio e abre sozinho na hora */
 setInterval(() => { if (!aberto() || !render.abriu) { if (aberto()) { render.abriu = true; carregar(); } else render(); } }, 20000);
 }
